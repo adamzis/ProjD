@@ -8,15 +8,37 @@
 		omit-xml-declaration="true" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Proj D</title>
+<title>Proj-D</title>
+<link rel="stylesheet" type="text/css" href="styles/dash.css" />
 </head>
 <body>
-	<div>
-		<form method="post" action="Prime.do">
-			
-			<input type="submit" value="Prime Number Finder" />
-			
-		</form>
+
+	<div id="content">
+		<h1>Dashboard</h1>
+
+		<hr />
+
+		<div id="forms">
+			<form method="post" action="Prime.do">
+				<input type="submit" value="Prime Number Finder" />
+			</form>
+
+			<form method="post" action="Gps.do">
+				<input type="submit" value="GPS Distance Calculator" />
+			</form>
+
+			<form method="post" action="Drone.do">
+				<input type="submit" value="Drone Delivery Timer" />
+			</form>
+
+			<form method="post" action="Ride.do">
+				<input type="submit" value="Ride Cost Estimator" />
+			</form>
+
+			<form method="post" action="Sis.do">
+				<input type="submit" value="SIS Report Generator" />
+			</form>
+		</div>
 	</div>
 </body>
 	</html>

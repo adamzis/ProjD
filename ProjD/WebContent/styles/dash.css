@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+body {
+	background-color: #262626;
+	font-family: sans-serif;
+}
+
+div#content>h1 {
+	color: black;
+	font-size: 3em;
+	margin: 10px;
+}
+
+div#content {
+	margin: auto;
+	width: 500px;
+	border: 5px solid black;
+	background-color: white;
+}
+
+div#content * {
+	text-align: center;
+}
+
+div#forms {
+	margin-bottom: 20px;
+}
+
+input[type="submit"] {
+	color: black;
+	background-color: white;
+	margin: 5px;
+	width: 12em;
+	height: 2.5em;
+	font-size: 25px;
+	border-radius: 12px;
+	border-color: blue;
+	border-style: solid;
+}

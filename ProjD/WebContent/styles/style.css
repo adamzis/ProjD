@@ -5,9 +5,15 @@ body {
 	font-family: sans-serif;
 }
 
-div#content>h1 {
+h1 {
 	color: black;
 	font-size: 3em;
+	margin: 10px;
+}
+
+h2 {
+	color: black;
+	font-size: 2em;
 	margin: 10px;
 }
 
@@ -36,4 +42,12 @@ input[type="submit"] {
 	border-radius: 12px;
 	border-color: blue;
 	border-style: solid;
+}
+
+#error {
+	color: red;
+}
+
+#result {
+	color: blue;
 }

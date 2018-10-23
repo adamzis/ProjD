@@ -1,17 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-	<jsp:directive.page contentType="text/html; charset=UTF-8" 
-		pageEncoding="UTF-8" session="false"/>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
 	<jsp:output doctype-root-element="html"
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="true" />
-<html xmlns="http://www.w3.org/1999/xhtml">
+	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Insert title here</title>
+<title>Proj D</title>
+<link href="styles/style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
+	<div id="content">
+		<h2>Prime Number Finder</h2>
 
+		<hr />
+
+		<div id="forms">
+			<form method="post" action="Prime.do">
+				<p>
+					<label>Less Than: <input type="text" name="lessThan"
+						value="${lessThan}" /></label>
+				</p>
+
+				<p>
+					<label>Greater Than: <input type="text" name="greaterThan"
+						value="${greaterThan}" /></label>
+				</p>
+				<input type="submit" name="getPrime" value="Find" />
+
+				<c:if test="${!empty result}">
+					<h3 id="result">${result}
+						<input id="next" type="submit" name="next" value="next" />
+					</h3>
+				</c:if>
+				<c:if test="${!empty error}">
+					<h3 id="error">${error}</h3>
+				</c:if>
+			</form>
+
+
+		</div>
+	</div>
 </body>
-</html>
+	</html>
 </jsp:root>

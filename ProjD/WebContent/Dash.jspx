@@ -9,10 +9,9 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Proj-D</title>
-<link rel="stylesheet" type="text/css" href="styles/dash.css" />
+<link href="styles/style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-
 	<div id="content">
 		<h1>Dashboard</h1>
 

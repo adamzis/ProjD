@@ -17,20 +17,20 @@ public class Engine {
 		return singleEngine;
 	}
 
-	public String doPrime(String lowerBound, String upperBound) {
+	public String doPrime(String lowerBound, String upperBound) throws Exception {
 
 		if (Long.parseLong(lowerBound) > Long.parseLong(upperBound))
-			return null;
-
+			throw new Exception();
+		
 		BigInteger primeInt;
 
 		primeInt = new BigInteger(lowerBound);
 		primeInt = primeInt.nextProbablePrime();
-
+		
 		if (primeInt.longValue() > Long.parseLong(upperBound))
-			return null;
-		else
-			return primeInt.toString();
+			throw new Exception();
+
+		return primeInt.toString();
 
 	}
 

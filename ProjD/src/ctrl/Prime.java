@@ -22,24 +22,24 @@ public class Prime extends HttpServlet {
 		if (request.getParameter("getPrime") != null || request.getParameter("next") != null) {
 			Engine model = Engine.getEngine();
 
-			String firstNumber = request.getParameter("lessThan");
-			String lastNumber = request.getParameter("greaterThan");
+			String firstNumber, lastNumber, result;
 
-			String result = model.doPrime(firstNumber, lastNumber);
+			if (request.getParameter("next") != null && request.getParameter("result") != null)
+				firstNumber = request.getParameter("result");
+			else
+				firstNumber = request.getParameter("lessThan");
+
+			lastNumber = request.getParameter("greaterThan");
+
+			try {
+				result = model.doPrime(firstNumber, lastNumber);
+				request.setAttribute("result", result);
+			} catch (Exception e) {
+				request.setAttribute("error", "No Values in Range");
+			}
 
 			request.setAttribute("lessThan", firstNumber);
 			request.setAttribute("greaterThan", lastNumber);
-
-			if (request.getParameter("next") != null) {
-				request.setAttribute("lessThan", result);
-				result = model.doPrime(result, lastNumber);
-			}
-
-			if (result == null) {
-				request.setAttribute("error", "No Values in Range");
-			} else {
-				request.setAttribute("result", result);
-			}
 
 		}
 

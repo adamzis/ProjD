@@ -51,3 +51,8 @@ input[type="submit"] {
 #result {
 	color: blue;
 }
+
+h5#dashLink {
+	text-align: left;
+	margin: 3px;
+}​

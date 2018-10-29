@@ -15,6 +15,7 @@
 </head>
 <body>
 	<div id="content">
+		<h5 id="dashLink"><a href="Dash.do">Dashboard</a></h5>
 		<h2>Prime Number Finder</h2>
 
 		<hr />
@@ -34,6 +35,7 @@
 
 				<c:if test="${!empty result}">
 					<h3 id="result">${result}
+						<input value="${result}" type="hidden" name="result"/>
 						<input id="next" type="submit" name="next" value="next" />
 					</h3>
 				</c:if>

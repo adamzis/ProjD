@@ -44,6 +44,17 @@ input[type="submit"] {
 	border-style: solid;
 }
 
+input[type="number"] {
+	color: black;
+	background-color: white;
+	margin: 2px;
+	width: 7em;
+	height: 1em;
+	font-size: 25px;
+	border-color: black;
+	border-style: solid;
+}
+
 #error {
 	color: red;
 }

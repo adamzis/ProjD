@@ -25,20 +25,20 @@
 			<form method="post" action="Gps.do">
 				<p>
 					<input type="number" placeholder="From Latitude" name="fromLat"
-						value="${fromLat}" step="1" min="-90" max="90"/>
+						value="${fromLat}" step="1" min="-90" max="90" />
 				</p>
 				<p>
 					<input type="number" placeholder="From Longitude" name="fromLong"
-						value="${fromLong}" step="1" min="-90" max="90"/>
+						value="${fromLong}" step="1" min="-90" max="90" />
 				</p>
 
 				<p>
 					<input type="number" placeholder="To Latitude" name="toLat"
-						value="${toLat}" step="1" min="-90" max="90"/>
+						value="${toLat}" step="1" min="-90" max="90" />
 				</p>
 				<p>
 					<input type="number" placeholder="To Longitude" name="toLong"
-						value="${toLong}" step="1" min="-90" max="90"/>
+						value="${toLong}" step="1" min="-90" max="90" />
 				</p>
 				<input type="submit" name="getGps" value="Find" />
 

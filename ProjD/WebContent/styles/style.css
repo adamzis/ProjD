@@ -20,7 +20,8 @@ h2 {
 div#content {
 	margin: auto;
 	width: 500px;
-	border: 5px solid black;
+	border: 5px solid gold;
+	border-radius: 10px;
 	background-color: white;
 }
 

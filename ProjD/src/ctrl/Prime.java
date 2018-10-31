@@ -35,7 +35,7 @@ public class Prime extends HttpServlet {
 				result = model.doPrime(firstNumber, lastNumber);
 				request.setAttribute("result", result);
 			} catch (Exception e) {
-				request.setAttribute("error", "No Values in Range");
+				request.setAttribute("error", e.getMessage());
 			}
 
 			request.setAttribute("lessThan", firstNumber);

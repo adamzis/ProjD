@@ -1,17 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-	<jsp:directive.page contentType="text/html; charset=UTF-8" 
-		pageEncoding="UTF-8" session="false"/>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
 	<jsp:output doctype-root-element="html"
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		omit-xml-declaration="true" />
-<html xmlns="http://www.w3.org/1999/xhtml">
+	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Insert title here</title>
+<title>Proj D</title>
+<link href="styles/style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
+	<div id="content">
+		<h5 id="dashLink">
+			<a href="Dash.do">Dashboard</a>
+		</h5>
+		<h2>Drone Delivery Timer</h2>
 
+		<hr />
+
+		<div id="forms">
+			<form method="post" action="Drone.do">
+				<p>
+					<input type="text" placeholder="Starting Address" name="startAddr"
+						value="${startAddr}" />
+				</p>
+
+				<p>
+					<input type="text" placeholder="Destination Address"
+						name="destAddr" value="${destAddr}" />
+				</p>
+				<input type="submit" name="getDrone" value="find" />
+
+				<c:if test="${!empty result}">
+					<h3 id="result">${result}
+						<input value="${result}" type="hidden" name="result" />
+					</h3>
+				</c:if>
+				<c:if test="${!empty error}">
+					<h3 id="error">${error}</h3>
+				</c:if>
+			</form>
+
+		</div>
+	</div>
 </body>
-</html>
+	</html>
 </jsp:root>

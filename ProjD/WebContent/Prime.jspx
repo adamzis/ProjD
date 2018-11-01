@@ -10,7 +10,7 @@
 		omit-xml-declaration="true" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Proj D</title>
+<title>Proj-D</title>
 <link href="styles/style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>

@@ -32,7 +32,7 @@ public class Gps extends HttpServlet {
 			request.setAttribute("toLong", toLong);
 
 			try {
-				String gps = model.doGps(fromLat, fromLong, toLat, toLong);
+				double gps = model.doGps(fromLat, fromLong, toLat, toLong);
 				request.setAttribute("result", gps);
 			} catch (NumberFormatException e) {
 				request.setAttribute("error", e.getMessage());

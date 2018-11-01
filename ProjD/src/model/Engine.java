@@ -8,23 +8,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class Engine {
-
 	private static Engine singleEngine = null;
+
+	public static final String GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+	public static final String DIST_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?";
 	private static final String API_KEY = "AIzaSyDigYKqPiu7A-9lydcl2SPBAfT6mrMQ7mY";
 
 	public static final int EARTH_DIAMETER = 12742;
 	public static final double CONVERT_TO_RADIANS = Math.PI / 180.0;
-
-	public static final String GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
-	public static final String DIST_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?";
-	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#,###");
-
 	public static final double DRONE_SPEED_KMH = 150.0;
 	public static final double SECONDS_IN_MIN = 60.0;
+	public static final double COST_PER_MINUTE = 0.5;
 
 	private Engine() {
 
@@ -141,8 +140,33 @@ public class Engine {
 
 	}
 
-	public double doRide(String startAddr, String destAddr) {
-		return 0.0;
+	public double doRide(String startAddr, String destAddr) throws Exception {
+		String formatStart = startAddr.replaceAll(" ", "+").trim();
+		String formatDest = destAddr.replaceAll(" ", "+").trim();
+
+		URL rideURL = new URL(DIST_URL + "origins=" + formatStart + "&destinations=" + formatDest
+				+ "&departure_time=now&key=" + API_KEY);
+
+		String rideJson = accessJson(rideURL);
+		int time = parseTime(rideJson);
+
+		double cost = ((double) time / SECONDS_IN_MIN) * COST_PER_MINUTE;
+
+		return cost;
+	}
+
+	private int parseTime(String rideJson) {
+		JsonParser parser = new JsonParser();
+		JsonObject rootObj = parser.parse(rideJson).getAsJsonObject();
+
+		JsonObject rowObj = rootObj.getAsJsonArray("rows").get(0).getAsJsonObject();
+
+		JsonObject durationObj = rowObj.getAsJsonArray("elements").get(0).getAsJsonObject()
+				.getAsJsonObject("duration_in_traffic");
+
+		int trafficSeconds = durationObj.get("value").getAsInt();
+
+		return trafficSeconds;
 	}
 
 }

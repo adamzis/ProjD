@@ -33,7 +33,7 @@ public class Prime extends HttpServlet {
 
 			try {
 				result = model.doPrime(firstNumber, lastNumber);
-				request.setAttribute("result", result);
+				request.setAttribute("result", result);	
 			} catch (Exception e) {
 				request.setAttribute("error", e.getMessage());
 			}

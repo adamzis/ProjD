@@ -18,12 +18,12 @@
 		<h5 id="dashLink">
 			<a href="Dash.do">Dashboard</a>
 		</h5>
-		<h2>Drone Delivery Timer</h2>
+		<h2>Ride Estimator</h2>
 
 		<hr />
 
 		<div id="forms">
-			<form method="post" action="Drone.do">
+			<form method="post" action="Ride.do">
 				<p>
 					<input type="text" placeholder="Starting Address" name="startAddr"
 						value="${startAddr}" />
@@ -37,9 +37,9 @@
 					value="Estiminate Cost In Traffic" />
 
 				<c:if test="${!empty result}">
-					<h3 id="result">${result}
-						<input value="${result}" type="hidden" name="result" />
-
+					<h3 id="result">
+						$<input value="${result}" type="hidden" name="result" />
+						<fmt:formatNumber value="${result}" maxFractionDigits="2" />
 					</h3>
 				</c:if>
 				<c:if test="${!empty error}">

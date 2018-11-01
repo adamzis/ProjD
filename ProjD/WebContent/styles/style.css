@@ -34,15 +34,25 @@ div#forms {
 }
 
 input[type="submit"] {
-	color: black;
-	background-color: white;
+	color: white;
+	background-color: #3399ff;
 	margin: 5px;
 	width: 12em;
 	height: 2.5em;
 	font-size: 25px;
 	border-radius: 12px;
-	border-color: blue;
+	border-color: #3399ff;
 	border-style: solid;
+}
+
+input[type="submit"]:hover {
+	background-color: #0066ff;
+	border-color: #0066ff;
+}
+
+input[type="submit"]:active {
+	background-color: blue;
+	border-color: blue;
 }
 
 input[type="number"] {
@@ -67,4 +77,5 @@ input[type="number"] {
 h5#dashLink {
 	text-align: left;
 	margin: 3px;
-}​
+}
+​

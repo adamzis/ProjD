@@ -1,33 +1,29 @@
 package model;
 
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import jdk.nashorn.internal.parser.JSONParser;
 
 public class Engine {
 
 	private static Engine singleEngine = null;
+	private static final String API_KEY = "AIzaSyDigYKqPiu7A-9lydcl2SPBAfT6mrMQ7mY";
+
 	public static final int EARTH_DIAMETER = 12742;
 	public static final double CONVERT_TO_RADIANS = Math.PI / 180.0;
-	public static final String API_KEY = "AIzaSyDigYKqPiu7A-9lydcl2SPBAfT6mrMQ7mY";
 
 	public static final String DISTANCE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#,###");
+
+	public static final double DRONE_SPEED_KMH = 150.0;
+	public static final double SECONDS_IN_MIN = 60.0;
 
 	private Engine() {
 
@@ -71,17 +67,7 @@ public class Engine {
 
 	}
 
-	public String doGps(String fromLat, String fromLong, String toLat, String toLong) throws NumberFormatException {
-
-		double distance = gpsCalc(fromLat, fromLong, toLat, toLong);
-
-		long longDistance = Math.round(distance);
-		String resultString = NUMBER_FORMAT.format(longDistance) + " km";
-
-		return resultString;
-	}
-
-	private double gpsCalc(String fromLat, String fromLong, String toLat, String toLong) {
+	public double doGps(String fromLat, String fromLong, String toLat, String toLong) throws NumberFormatException {
 
 		double lat1 = Double.parseDouble(fromLat) * CONVERT_TO_RADIANS;
 		double long1 = Double.parseDouble(fromLong) * CONVERT_TO_RADIANS;
@@ -97,43 +83,33 @@ public class Engine {
 	}
 
 	// TODO Refactor this piece of shit
-	public String doDrone(String startAddr, String destAddr) throws Exception {
+	public double doDrone(String startAddr, String destAddr) throws Exception {
 
 		Map<String, String> startCoor, destCoor;
-		final double DRONE_SPEED_KMH = 150.0;
-		final double SECONDS_IN_MIN = 60.0;
 
-		String fixedStart = startAddr.replaceAll(" ", "+").trim();
-		String fixedDest = destAddr.replaceAll(" ", "+").trim();
+		String formatStart = startAddr.replaceAll(" ", "+").trim();
+		String formatDest = destAddr.replaceAll(" ", "+").trim();
 
-		String startJson = geoApi(fixedStart);
-		String destJson = geoApi(fixedDest);
+		String startURL = new StringBuilder(DISTANCE_URL).append(formatStart).append("&key=").append(API_KEY)
+				.toString();
+		String destURL = new StringBuilder(DISTANCE_URL).append(formatDest).append("&key=").append(API_KEY).toString();
+
+		String startJson = geoApi(startURL);
+		String destJson = geoApi(destURL);
 
 		startCoor = parseCoor(startJson);
 		destCoor = parseCoor(destJson);
 
-		double gpsResult = gpsCalc(startCoor.get("lat"), startCoor.get("lng"), destCoor.get("lat"),
-				destCoor.get("lng"));
+		double distance = doGps(startCoor.get("lat"), startCoor.get("lng"), destCoor.get("lat"), destCoor.get("lng"));
 
-		gpsResult = (gpsResult / DRONE_SPEED_KMH) * SECONDS_IN_MIN;
+		double droneTime = (distance / DRONE_SPEED_KMH) * SECONDS_IN_MIN;
 
-		long resultNum = Math.round(gpsResult);
-
-		String resultString = NUMBER_FORMAT.format(resultNum) + " min";
-
-		return resultString;
+		return droneTime;
 	}
 
 	private String geoApi(String addr) throws Exception {
 
-		StringBuilder queryURLBuild = new StringBuilder(DISTANCE_URL);
-		queryURLBuild.append(addr);
-		queryURLBuild.append("&key=");
-		queryURLBuild.append(API_KEY);
-
-		String queryURL = queryURLBuild.toString();
-
-		URL httpURL = new URL(queryURL);
+		URL httpURL = new URL(addr);
 		URLConnection httpConnection = httpURL.openConnection();
 
 		Scanner httpInput = new Scanner(httpConnection.getInputStream());

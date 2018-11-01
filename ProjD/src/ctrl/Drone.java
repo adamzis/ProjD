@@ -25,7 +25,7 @@ public class Drone extends HttpServlet {
 			String destAddr = request.getParameter("destAddr");
 
 			try {
-				String result = model.doDrone(startAddr, destAddr);
+				double result = model.doDrone(startAddr, destAddr);
 				request.setAttribute("result", result);
 			} catch (Exception e) {
 				request.setAttribute("error", e.getMessage());

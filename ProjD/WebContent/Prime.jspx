@@ -33,7 +33,7 @@
 					<label>Greater Than: <input type="text" name="greaterThan"
 						value="${greaterThan}" /></label>
 				</p>
-				<input type="submit" name="getPrime" value="find" />
+				<input type="submit" name="getPrime" value="Find" />
 
 				<c:if test="${!empty result}">
 					<h3 id="result">${result}

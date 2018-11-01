@@ -33,7 +33,7 @@
 					<input type="text" placeholder="Destination Address"
 						name="destAddr" value="${destAddr}" />
 				</p>
-				<input type="submit" name="getDrone" value="find" />
+				<input type="submit" name="getDrone" value="Delivery Time" />
 
 				<c:if test="${!empty result}">
 					<h3 id="result">

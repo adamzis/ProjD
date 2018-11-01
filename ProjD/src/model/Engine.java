@@ -19,7 +19,8 @@ public class Engine {
 	public static final int EARTH_DIAMETER = 12742;
 	public static final double CONVERT_TO_RADIANS = Math.PI / 180.0;
 
-	public static final String DISTANCE_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+	public static final String GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+	public static final String DIST_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?";
 	public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#,###");
 
 	public static final double DRONE_SPEED_KMH = 150.0;
@@ -67,12 +68,13 @@ public class Engine {
 
 	}
 
-	public double doGps(String fromLat, String fromLong, String toLat, String toLong) throws NumberFormatException {
+	public double doGps(String startLat, String startLong, String destLat, String destLong)
+			throws NumberFormatException {
 
-		double lat1 = Double.parseDouble(fromLat) * CONVERT_TO_RADIANS;
-		double long1 = Double.parseDouble(fromLong) * CONVERT_TO_RADIANS;
-		double lat2 = Double.parseDouble(toLat) * CONVERT_TO_RADIANS;
-		double long2 = Double.parseDouble(toLong) * CONVERT_TO_RADIANS;
+		double lat1 = Double.parseDouble(startLat) * CONVERT_TO_RADIANS;
+		double long1 = Double.parseDouble(startLong) * CONVERT_TO_RADIANS;
+		double lat2 = Double.parseDouble(destLat) * CONVERT_TO_RADIANS;
+		double long2 = Double.parseDouble(destLong) * CONVERT_TO_RADIANS;
 
 		double Y = Math.cos(lat1) * Math.cos(lat2);
 		double X = Math.pow(Math.sin((lat2 - lat1) / 2), 2.0) + Y * Math.pow(Math.sin((long2 - long1) / 2), 2.0);
@@ -85,32 +87,30 @@ public class Engine {
 	// TODO Refactor this piece of shit
 	public double doDrone(String startAddr, String destAddr) throws Exception {
 
-		Map<String, String> startCoor, destCoor;
+		String[] startLatLng, destLatLng;
 
 		String formatStart = startAddr.replaceAll(" ", "+").trim();
 		String formatDest = destAddr.replaceAll(" ", "+").trim();
 
-		String startURL = new StringBuilder(DISTANCE_URL).append(formatStart).append("&key=").append(API_KEY)
-				.toString();
-		String destURL = new StringBuilder(DISTANCE_URL).append(formatDest).append("&key=").append(API_KEY).toString();
+		URL startURL = new URL(GEO_URL + "address=" + formatStart + "&key=" + API_KEY);
+		URL destURL = new URL(GEO_URL + "address=" + formatDest + "&key=" + API_KEY);
 
-		String startJson = getJson(startURL);
-		String destJson = getJson(destURL);
+		String startJson = accessJson(startURL);
+		String destJson = accessJson(destURL);
 
-		startCoor = parseCoor(startJson);
-		destCoor = parseCoor(destJson);
+		startLatLng = parseLatLng(startJson);
+		destLatLng = parseLatLng(destJson);
 
-		double distance = doGps(startCoor.get("lat"), startCoor.get("lng"), destCoor.get("lat"), destCoor.get("lng"));
+		double distance = doGps(startLatLng[0], startLatLng[1], destLatLng[0], destLatLng[1]);
 
 		double droneTime = (distance / DRONE_SPEED_KMH) * SECONDS_IN_MIN;
 
 		return droneTime;
 	}
 
-	private String getJson(String addr) throws Exception {
+	private String accessJson(URL httpAddr) throws Exception {
 
-		URL httpURL = new URL(addr);
-		URLConnection httpConnection = httpURL.openConnection();
+		URLConnection httpConnection = httpAddr.openConnection();
 
 		Scanner httpInput = new Scanner(httpConnection.getInputStream());
 		String result = "";
@@ -124,9 +124,8 @@ public class Engine {
 		return result.toString();
 	}
 
-	private Map<String, String> parseCoor(String json) {
+	private String[] parseLatLng(String json) {
 
-		Map<String, String> latLng = new HashMap<>();
 		JsonParser parser = new JsonParser();
 		JsonObject rootObj = parser.parse(json).getAsJsonObject();
 
@@ -136,11 +135,14 @@ public class Engine {
 		String lat = locObj.get("lat").getAsString();
 		String lng = locObj.get("lng").getAsString();
 
-		latLng.put("lat", lat);
-		latLng.put("lng", lng);
+		String[] latLng = { lat, lng };
 
 		return latLng;
 
+	}
+
+	public double doRide(String startAddr, String destAddr) {
+		return 0.0;
 	}
 
 }

@@ -38,8 +38,9 @@
 
 				<c:if test="${!empty result}">
 					<h3 id="result">
-						$<input value="${result}" type="hidden" name="result" />
-						<fmt:formatNumber value="${result}" maxFractionDigits="2" />
+						<input value="${result}" type="hidden" name="result" />
+						<fmt:formatNumber type="currency" value="${result}"
+							maxFractionDigits="2" minFractionDigits="2" />
 					</h3>
 				</c:if>
 				<c:if test="${!empty error}">

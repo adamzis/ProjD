@@ -88,6 +88,9 @@ public class Engine {
 
 		String[] startLatLng, destLatLng;
 
+		if (startAddr.isEmpty() || destAddr.isEmpty())
+			throw new IllegalArgumentException("One or more addresses are empty");
+
 		String formatStart = startAddr.replaceAll(" ", "+").trim();
 		String formatDest = destAddr.replaceAll(" ", "+").trim();
 
@@ -141,6 +144,9 @@ public class Engine {
 	}
 
 	public double doRide(String startAddr, String destAddr) throws Exception {
+		if (startAddr.isEmpty() || destAddr.isEmpty())
+			throw new IllegalArgumentException("One or more addresses are empty");
+
 		String formatStart = startAddr.replaceAll(" ", "+").trim();
 		String formatDest = destAddr.replaceAll(" ", "+").trim();
 

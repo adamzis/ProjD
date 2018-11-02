@@ -39,7 +39,7 @@
 					<h3 id="result">
 						<input value="${result}" type="hidden" name="result" />
 						<fmt:formatNumber value="${result}" maxFractionDigits="0" />
-						km
+						min
 					</h3>
 				</c:if>
 				<c:if test="${!empty error}">

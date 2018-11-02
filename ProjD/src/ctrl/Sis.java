@@ -1,6 +1,8 @@
 package ctrl;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Engine;
+import model.StudentBean;
 
 /**
  * Servlet implementation class Sis
@@ -23,9 +26,10 @@ public class Sis extends HttpServlet {
 
 			String namePre = request.getParameter("namePre");
 			String minGpa = request.getParameter("minGpa");
+			String sortBy = request.getParameter("sortBy");
 
 			try {
-				String result = model.doSis(namePre, minGpa);
+				List<StudentBean> result = model.doSis(namePre, minGpa);
 				request.setAttribute("result", result);
 			} catch (Exception e) {
 				request.setAttribute("error", e.getMessage());
@@ -33,6 +37,7 @@ public class Sis extends HttpServlet {
 
 			request.setAttribute("namePre", namePre);
 			request.setAttribute("minGpa", minGpa);
+			request.setAttribute("sortBy", sortBy);
 		}
 
 		this.getServletContext().getRequestDispatcher("/Sis.jspx").forward(request, response);

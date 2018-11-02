@@ -78,4 +78,16 @@ h5#dashLink {
 	text-align: left;
 	margin: 3px;
 }
+
+table {
+	border: 2px solid black;
+}
+
+tr {
+	border: 2px solid black;
+}
+
+td {
+	border: 2px solid black;
+}
 ​

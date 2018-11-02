@@ -34,21 +34,29 @@
 						value="${minGpa}" />
 				</p>
 				<p>
-					<select>
-						<option>Select One:</option>
-						<option>Last Name:</option>
-						<option>Major</option>
-						<option>Number Of Courses</option>
-						<option>GPA</option>
+					<select id="sortBy" name="sortBy">
+						<option selected="any" value="NONE">Select One:</option>
+						<option value="SURNAME">Last Name:</option>
+						<option value="MAJOR">Major</option>
+						<option value="COURSES">Number Of Courses</option>
+						<option value="GPA">GPA</option>
 					</select>
 				</p>
 				<p>
 					<input type="submit" name="getSis" value="Generate Report" />
 				</p>
 				<c:if test="${!empty result}">
-					<h3 id="result">${result}
-						<input value="${result}" type="hidden" name="result" />
-					</h3>
+					<table>
+						<p><em>Sorted by ${sortBy}</em></p>
+						<c:forEach var="student" items="${result}">
+							<tr>
+								<td>${student.getName()}</td>
+								<td>${student.getMajor()}</td>
+								<td>${student.getCourses()}</td>
+								<td>${student.getGpa()}</td>
+							</tr>
+						</c:forEach>
+					</table>
 				</c:if>
 				<c:if test="${!empty error}">
 					<h3 id="error">${error}</h3>

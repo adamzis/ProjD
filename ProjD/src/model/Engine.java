@@ -9,7 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -19,7 +21,6 @@ import com.google.gson.JsonParser;
 
 public class Engine {
 	private static Engine singleEngine = null;
-	public static final String DB_URL = "jdbc:derby://localhost:64413/EECS;user=student;password=secret";
 
 	public static final String GEO_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
 	public static final String DIST_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?";
@@ -182,22 +183,11 @@ public class Engine {
 		return trafficSeconds;
 	}
 
-	public String doSis(String name, String gpa) throws Exception {
-		Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+	public List<StudentBean> doSis(String name, String gpa) throws Exception {
 
-		Connection con = DriverManager.getConnection(DB_URL);
+		List<StudentBean> students = dao.retrieve(name, gpa);
 
-		String query = "SELECT SURNAME, GPA FROM SIS";
-		PreparedStatement preS = con.prepareStatement(query);
-
-		ResultSet r = preS.executeQuery();
-
-		String result = "";
-		if (r.next()) {
-			result += "Name: " + r.getString(0) + "\tGpa: " + r.getString(1);
-			result += "\n";
-		}
-		return result;
+		return students;
 
 	}
 

@@ -3,7 +3,7 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8"
-		pageEncoding="UTF-8" session="false" />
+		pageEncoding="UTF-8" session="true" />
 	<jsp:output doctype-root-element="html"
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
@@ -40,7 +40,7 @@
 					<input type="number" placeholder="To Longitude" name="toLong"
 						value="${toLong}" step="1" min="-90" max="90" />
 				</p>
-				<input type="submit" name="getGps" value="Compute Distance" />
+				<input type="submit" name="calc" value="Compute Distance" />
 
 				<c:if test="${!empty result}">
 					<h3 id="result">

@@ -3,7 +3,7 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt" version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8"
-		pageEncoding="UTF-8" session="false" />
+		pageEncoding="UTF-8" session="true" />
 	<jsp:output doctype-root-element="html"
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
@@ -19,7 +19,6 @@
 			<a href="Dash.do">Dashboard</a>
 		</h5>
 		<h2>Ride Estimator</h2>
-
 		<hr />
 
 		<div id="forms">
@@ -33,7 +32,7 @@
 					<input type="text" placeholder="Destination Address"
 						name="destAddr" value="${destAddr}" />
 				</p>
-				<input type="submit" name="getRide"
+				<input type="submit" name="calc"
 					value="Estiminate Cost In Traffic" />
 
 				<c:if test="${!empty result}">

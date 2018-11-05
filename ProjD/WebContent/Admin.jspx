@@ -10,7 +10,7 @@
 		omit-xml-declaration="true" />
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Proj-D</title>
+<title>Admin</title>
 <link href="styles/style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
@@ -18,35 +18,24 @@
 		<h5 id="dashLink">
 			<a href="Dash.do">Dashboard</a>
 		</h5>
-		<h2>Prime Number Finder</h2>
-
+		<h1>Admin</h1>
 		<hr />
 
-		<div id="forms">
-			<form method="post" action="Prime.do">
-				<p>
-					<label>Less Than: <input type="text" name="lessThan"
-						value="${lessThan}" /></label>
-				</p>
+		<h3>Total Usage: ${totalUsage}</h3>
+		<h3>Drone Usage: ${droneUsage}</h3>
+		<h3>
+			Drone Usage Percentage:
+			<fmt:formatNumber value="${dronePercent}" maxFractionDigits="0" />%
+		</h3>
+		<hr />
+		
+		<h3>Total Sessions: ${totalSessions}</h3>
+		<h3>Total Drone and Ride: ${sessionDroneRide}</h3>
+		<h3>
+			Likelihood of User using Drone and Ride:
+			<fmt:formatNumber value="${droneRidePercent}" maxFractionDigits="0" />%
+		</h3>
 
-				<p>
-					<label>Greater Than: <input type="text" name="greaterThan"
-						value="${greaterThan}" /></label>
-				</p>
-				<input type="submit" name="calc" value="Find" />
-
-				<c:if test="${!empty result}">
-					<h3 id="result">${result}
-						<input value="${result}" type="hidden" name="result" /> <input
-							id="next" type="submit" name="next" value="next" />
-					</h3>
-				</c:if>
-				<c:if test="${!empty error}">
-					<h3 id="error">${error}</h3>
-				</c:if>
-			</form>
-
-		</div>
 	</div>
 </body>
 	</html>

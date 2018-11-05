@@ -44,14 +44,16 @@ public class October implements Filter {
 			if (sortBy != null && !sortBy.matches("NONE")) {
 				httpRequest.setAttribute("message", "Sorting is Unavailable");
 				httpRequest.getServletContext().getRequestDispatcher("/Filter.jspx").forward(httpRequest, response);
+			} else {
+				chain.doFilter(httpRequest, response);
 			}
 
 		} else if (httpRequest.getRequestURL().toString().matches(".*(Ride.do)")) {
 			httpRequest.setAttribute("message", "Ride Functionality is Unavailable");
 			httpRequest.getServletContext().getRequestDispatcher("/Filter.jspx").forward(httpRequest, response);
+		} else {
+			chain.doFilter(httpRequest, response);
 		}
-
-		chain.doFilter(httpRequest, response);
 
 	}
 

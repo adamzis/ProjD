@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Engine;
 
@@ -18,11 +19,13 @@ public class Drone extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getParameter("getDrone") != null) {
+		if (request.getParameter("calc") != null) {
 			Engine model = Engine.getEngine();
 
 			String startAddr = request.getParameter("startAddr");
 			String destAddr = request.getParameter("destAddr");
+			HttpSession sn = request.getSession();
+			sn.setAttribute("usedDrone", true);
 
 			try {
 				double result = model.doDrone(startAddr, destAddr);

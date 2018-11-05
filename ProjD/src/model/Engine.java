@@ -184,7 +184,6 @@ public class Engine {
 	}
 
 	public List<StudentBean> doSis(String name, String gpa) throws Exception {
-
 		List<StudentBean> students = dao.retrieve(name, gpa);
 
 		return students;

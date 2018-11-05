@@ -17,7 +17,6 @@ public class StudentDAO {
 	public List<StudentBean> retrieve(String name, String gpa) throws Exception {
 
 		Class.forName(DERBY_DRIVER).newInstance();
-
 		Connection con = DriverManager.getConnection(DB_URL);
 
 		Statement s = con.createStatement();

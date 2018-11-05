@@ -18,7 +18,7 @@ public class Gps extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getParameter("getGps") != null) {
+		if (request.getParameter("calc") != null) {
 			Engine model = Engine.getEngine();
 
 			String fromLat = request.getParameter("fromLat");

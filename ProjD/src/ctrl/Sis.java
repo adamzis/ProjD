@@ -21,7 +21,7 @@ public class Sis extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (request.getParameter("getSis") != null) {
+		if (request.getParameter("calc") != null) {
 			Engine model = Engine.getEngine();
 
 			String namePre = request.getParameter("namePre");

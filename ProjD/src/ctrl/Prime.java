@@ -19,7 +19,7 @@ public class Prime extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if (request.getParameter("getPrime") != null || request.getParameter("next") != null) {
+		if (request.getParameter("calc") != null || request.getParameter("next") != null) {
 			Engine model = Engine.getEngine();
 
 			String firstNumber, lastNumber, result;

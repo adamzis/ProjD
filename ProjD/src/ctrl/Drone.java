@@ -20,12 +20,13 @@ public class Drone extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getParameter("calc") != null) {
+			request.getSession().setAttribute("usedDrone", true);
+
+			String startAddr, destAddr;
 			Engine model = Engine.getEngine();
 
-			String startAddr = request.getParameter("startAddr");
-			String destAddr = request.getParameter("destAddr");
-			HttpSession sn = request.getSession();
-			sn.setAttribute("usedDrone", true);
+			startAddr = request.getParameter("startAddr");
+			destAddr = request.getParameter("destAddr");
 
 			try {
 				double result = model.doDrone(startAddr, destAddr);
@@ -37,7 +38,6 @@ public class Drone extends HttpServlet {
 			request.setAttribute("startAddr", startAddr);
 			request.setAttribute("destAddr", destAddr);
 		}
-
 		this.getServletContext().getRequestDispatcher("/Drone.jspx").forward(request, response);
 	}
 

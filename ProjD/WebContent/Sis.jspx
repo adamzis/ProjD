@@ -19,7 +19,6 @@
 			<a href="Dash.do">Dashboard</a>
 		</h5>
 		<h2>SIS Report Generator</h2>
-
 		<hr />
 
 		<div id="forms">
@@ -28,26 +27,30 @@
 					<input type="text" placeholder="Name Prefix ..." name="namePre"
 						value="${namePre}" />
 				</p>
-
 				<p>
 					<input type="text" placeholder="Minimum GPA" name="minGpa"
 						value="${minGpa}" />
 				</p>
 				<p>
 					<select id="sortBy" name="sortBy">
-						<option selected="any" value="NONE">Select One:</option>
+						<option value="NONE">Select One:</option>
 						<option value="SURNAME">Last Name:</option>
 						<option value="MAJOR">Major</option>
 						<option value="COURSES">Number Of Courses</option>
 						<option value="GPA">GPA</option>
 					</select>
 				</p>
+				
 				<p>
 					<input type="submit" name="calc" value="Generate Report" />
 				</p>
+				
 				<c:if test="${!empty result}">
 					<table>
-						<p><em>Sorted by ${sortBy}</em></p>
+						<p>
+							<em>Sorted by ${sortBy}</em>
+						</p>
+						
 						<c:forEach var="student" items="${result}">
 							<tr>
 								<td>${student.getName()}</td>
@@ -56,13 +59,15 @@
 								<td>${student.getGpa()}</td>
 							</tr>
 						</c:forEach>
+						
 					</table>
 				</c:if>
+				
 				<c:if test="${!empty error}">
 					<h3 id="error">${error}</h3>
 				</c:if>
+				
 			</form>
-
 		</div>
 	</div>
 </body>

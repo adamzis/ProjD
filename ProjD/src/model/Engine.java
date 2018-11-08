@@ -120,8 +120,8 @@ public class Engine {
 			throw new IllegalArgumentException("One or more addresses are empty");
 
 		addr = addr.replaceAll(" ", "+").trim();
-		URL geoURL = new URL(GEO_URL + "address=" + addr + "&key=" + API_KEY);
 
+		URL geoURL = new URL(GEO_URL + "address=" + addr + "&key=" + API_KEY);
 		return geoURL;
 	}
 
@@ -157,7 +157,6 @@ public class Engine {
 		String lng = locObj.get("lng").getAsString();
 
 		String[] latLng = { lat, lng };
-
 		return latLng;
 	}
 
@@ -168,7 +167,6 @@ public class Engine {
 		int time = parseTime(rideJson);
 
 		double cost = ((double) time / SECONDS_IN_MIN) * COST_PER_MINUTE;
-
 		return cost;
 	}
 
@@ -184,10 +182,10 @@ public class Engine {
 
 		URL rideURL = new URL(DIST_URL + "origins=" + formatStart + "&destinations=" + formatDest
 				+ "&departure_time=now&key=" + API_KEY);
-
 		return rideURL;
 	}
 
+	// Parses the time in traffic from the returned Json.
 	private int parseTime(String rideJson) {
 
 		JsonParser parser = new JsonParser();
@@ -199,15 +197,12 @@ public class Engine {
 				.getAsJsonObject("duration_in_traffic");
 
 		int trafficSeconds = durationObj.get("value").getAsInt();
-
 		return trafficSeconds;
 	}
 
-	public List<StudentBean> doSis(String name, String gpa) throws Exception {
-		List<StudentBean> students = dao.retrieve(name, gpa);
+	public List<StudentBean> doSis(String name, String gpa, String order) throws Exception {
 
+		List<StudentBean> students = dao.retrieve(name, gpa, order);
 		return students;
-
 	}
-
 }

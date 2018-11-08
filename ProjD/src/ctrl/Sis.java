@@ -22,14 +22,15 @@ public class Sis extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getParameter("calc") != null) {
+			String namePre, minGpa, sortBy;
 			Engine model = Engine.getEngine();
 
-			String namePre = request.getParameter("namePre");
-			String minGpa = request.getParameter("minGpa");
-			String sortBy = request.getParameter("sortBy");
+			namePre = request.getParameter("namePre");
+			minGpa = request.getParameter("minGpa");
+			sortBy = request.getParameter("sortBy");
 
 			try {
-				List<StudentBean> result = model.doSis(namePre, minGpa);
+				List<StudentBean> result = model.doSis(namePre, minGpa, sortBy);
 				request.setAttribute("result", result);
 			} catch (Exception e) {
 				request.setAttribute("error", e.getMessage());

@@ -20,13 +20,13 @@ public class Ride extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getParameter("calc") != null) {
+			request.getSession().setAttribute("usedRide", true);
+
 			Engine model = Engine.getEngine();
+			String startAddr, destAddr;
 
-			String startAddr = request.getParameter("startAddr");
-			String destAddr = request.getParameter("destAddr");
-
-			HttpSession sn = request.getSession();
-			sn.setAttribute("usedRide", true);
+			startAddr = request.getParameter("startAddr");
+			destAddr = request.getParameter("destAddr");
 
 			try {
 				double result = model.doRide(startAddr, destAddr);

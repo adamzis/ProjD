@@ -1,6 +1,8 @@
 package adhoc;
 
 import java.io.IOException;
+import java.io.Writer;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,19 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @WebFilter(urlPatterns = { "/Sis.do", "/Ride.do" })
 public class October implements Filter {
 
-	/**
-	 * Default constructor.
-	 */
-	public October() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see Filter#destroy()
-	 */
-	public void destroy() {
-		// TODO Auto-generated method stub
-	}
+	public static final String html = "<html><body><p>Feature unavailable <a href='Dash.do'>Back To Dashboard</a></p></body></html>";
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -37,20 +27,17 @@ public class October implements Filter {
 			throws IOException, ServletException {
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-
-		if (httpRequest.getRequestURL().toString().matches(".*(Sis.do)")) {
+		Writer out = response.getWriter();
+		if (httpRequest.getRequestURL().toString().matches(".*Sis.do")) {
 			String sortBy = httpRequest.getParameter("sortBy");
 
-			if (sortBy != null && !sortBy.matches("NONE")) {
-				httpRequest.setAttribute("message", "Sorting is Unavailable");
-				httpRequest.getServletContext().getRequestDispatcher("/Filter.jspx").forward(httpRequest, response);
-			} else {
+			if (sortBy != null && !sortBy.matches("NONE"))
+				out.write(html);
+			else
 				chain.doFilter(httpRequest, response);
-			}
 
-		} else if (httpRequest.getRequestURL().toString().matches(".*(Ride.do)")) {
-			httpRequest.setAttribute("message", "Ride Functionality is Unavailable");
-			httpRequest.getServletContext().getRequestDispatcher("/Filter.jspx").forward(httpRequest, response);
+		} else if (httpRequest.getRequestURL().toString().matches(".*Ride.do")) {
+			out.write(html);
 		} else {
 			chain.doFilter(httpRequest, response);
 		}

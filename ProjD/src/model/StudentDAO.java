@@ -4,37 +4,70 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StudentDAO {
 
 	public static final String DERBY_DRIVER = "org.apache.derby.jdbc.ClientDriver";
 	public static final String DB_URL = "jdbc:derby://localhost:64413/EECS;user=student;password=secret";
 	public static final String QUERY = "SELECT * FROM SIS WHERE SURNAME LIKE ? AND GPA >= ?";
+	private Connection con;
 
-	public List<StudentBean> retrieve(String name, String gpa) throws Exception {
+	// This helps prevent SQL injection attacks on the ORDER BY statement.
+	private Map<String, String> orderMap;
 
-		Class.forName(DERBY_DRIVER).newInstance();
-		Connection con = DriverManager.getConnection(DB_URL);
+	public StudentDAO() {
+		orderMap = new HashMap<>();
+
+		orderMap.put("NONE", "NONE");
+		orderMap.put("SURNAME", "SURNAME");
+		orderMap.put("GPA", "GPA");
+		orderMap.put("COURSES", "COURSES");
+		orderMap.put("MAJOR", "MAJOR");
+
+		try {
+			Class.forName(DERBY_DRIVER).newInstance();
+			con = DriverManager.getConnection(DB_URL);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	public List<StudentBean> retrieve(String name, String gpa, String order) throws Exception {
 
 		Statement s = con.createStatement();
 		s.executeUpdate("set schema roumani");
 
-		PreparedStatement preS = con.prepareStatement(QUERY);
+		PreparedStatement preS = null;
 
-		if (!name.isEmpty())
-			preS.setString(1, name);
+		if (order.equals("NONE"))
+			preS = con.prepareStatement(QUERY);
 		else
+			preS = con.prepareStatement(QUERY + "ORDER BY " + getSort(order));
+
+		if (name.isEmpty())
 			preS.setString(1, "%");
-
-		if (!gpa.isEmpty())
-			preS.setString(2, gpa);
 		else
+			preS.setString(1, name);
+
+		if (gpa.isEmpty())
 			preS.setString(2, "0");
+		else
+			preS.setString(2, gpa);
 
 		ResultSet r = preS.executeQuery();
+
+		List<StudentBean> studentList = makeStudentList(r);
+		return studentList;
+	}
+
+	private List<StudentBean> makeStudentList(ResultSet r) throws SQLException {
 
 		List<StudentBean> studentList = new ArrayList<>();
 
@@ -47,8 +80,20 @@ public class StudentDAO {
 
 			studentList.add(student);
 		}
-
 		return studentList;
+	}
+
+	// Checks the input string against its value in a map and returns the mapped
+	// value. If there is no matching mapped value, an exception is thrown. This
+	// could indicate the user replaced the value of the options.
+	private String getSort(String order) {
+
+		String sanitizedOrder = orderMap.get(order);
+
+		if (sanitizedOrder != null)
+			return orderMap.get(order);
+		else
+			throw new IllegalArgumentException("Attempt to inject SQL Detected.");
 
 	}
 }

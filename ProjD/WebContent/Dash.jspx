@@ -19,7 +19,7 @@
 
 		<hr />
 
-		<div id="forms">
+		<div class="forms">
 			<form method="post" action="Prime.do">
 				<input type="submit" value="Prime Number Finder" />
 			</form>

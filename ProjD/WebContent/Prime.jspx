@@ -19,20 +19,19 @@
 			<a href="Dash.do">Dashboard</a>
 		</h5>
 		<h2>Prime Number Finder</h2>
-
 		<hr />
 
-		<div id="forms">
+		<div class="forms">
 			<form method="post" action="Prime.do">
 				<p>
 					<label>Less Than: <input type="text" name="lessThan"
 						value="${lessThan}" /></label>
 				</p>
-
 				<p>
 					<label>Greater Than: <input type="text" name="greaterThan"
 						value="${greaterThan}" /></label>
 				</p>
+
 				<input type="submit" name="calc" value="Find" />
 
 				<c:if test="${!empty result}">
@@ -41,11 +40,12 @@
 							id="next" type="submit" name="next" value="next" />
 					</h3>
 				</c:if>
+
 				<c:if test="${!empty error}">
 					<h3 id="error">${error}</h3>
 				</c:if>
-			</form>
 
+			</form>
 		</div>
 	</div>
 </body>

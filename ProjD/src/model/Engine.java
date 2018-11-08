@@ -27,10 +27,12 @@ public class Engine {
 	private static final String API_KEY = "AIzaSyDigYKqPiu7A-9lydcl2SPBAfT6mrMQ7mY";
 
 	public static final int EARTH_DIAMETER = 12742;
-	public static final double CONVERT_TO_RADIANS = Math.PI / 180.0;
+	public static final double DEGREES_TO_RADIANS = Math.PI / 180.0;
 	public static final double DRONE_SPEED_KMH = 150.0;
 	public static final double SECONDS_IN_MIN = 60.0;
 	public static final double COST_PER_MINUTE = 0.5;
+	public static final double TWO = 2.0;
+
 	private StudentDAO dao;
 
 	private Engine() {
@@ -44,32 +46,31 @@ public class Engine {
 		return singleEngine;
 	}
 
-	public String doPrime(String lowerBound, String upperBound) throws Exception {
-
-		long lowerLong = 0l;
-		long upperLong = 0l;
+	public String doPrime(String lessThan, String greaterThan) throws Exception {
+		long lessLong = 0l;
+		long greaterLong = 0l;
 
 		try {
-			lowerLong = Long.parseLong(lowerBound);
-			upperLong = Long.parseLong(upperBound);
+			lessLong = Long.parseLong(lessThan);
+			greaterLong = Long.parseLong(greaterThan);
 		} catch (NumberFormatException e) {
-			throw new Exception("Invalid entires.");
+			throw new IllegalArgumentException("Invalid entires");
 		}
 
-		if (upperLong < 0)
-			throw new Exception("end < 0: " + upperLong);
-		else if (lowerLong < 0)
-			throw new Exception("start < 0: " + lowerLong);
-		else if (lowerLong > upperLong)
-			throw new Exception("No more primes in range");
+		if (greaterLong < 0)
+			throw new IllegalArgumentException("end < 0: " + greaterLong);
+		else if (lessLong < 0)
+			throw new IllegalArgumentException("start < 0: " + lessLong);
+		else if (lessLong > greaterLong)
+			throw new IllegalArgumentException("No more primes in range");
 
 		BigInteger primeInt;
 
-		primeInt = new BigInteger(lowerBound);
+		primeInt = new BigInteger(lessThan);
 		primeInt = primeInt.nextProbablePrime();
 
-		if (primeInt.longValue() > Long.parseLong(upperBound))
-			throw new Exception("No more primes in range.");
+		if (primeInt.longValue() > Long.parseLong(greaterThan))
+			throw new IllegalArgumentException("No more primes in range.");
 
 		return primeInt.toString();
 
@@ -77,14 +78,13 @@ public class Engine {
 
 	public double doGps(String startLat, String startLong, String destLat, String destLong)
 			throws NumberFormatException {
-
-		double lat1 = Double.parseDouble(startLat) * CONVERT_TO_RADIANS;
-		double long1 = Double.parseDouble(startLong) * CONVERT_TO_RADIANS;
-		double lat2 = Double.parseDouble(destLat) * CONVERT_TO_RADIANS;
-		double long2 = Double.parseDouble(destLong) * CONVERT_TO_RADIANS;
+		double lat1 = Double.parseDouble(startLat) * DEGREES_TO_RADIANS;
+		double long1 = Double.parseDouble(startLong) * DEGREES_TO_RADIANS;
+		double lat2 = Double.parseDouble(destLat) * DEGREES_TO_RADIANS;
+		double long2 = Double.parseDouble(destLong) * DEGREES_TO_RADIANS;
 
 		double Y = Math.cos(lat1) * Math.cos(lat2);
-		double X = Math.pow(Math.sin((lat2 - lat1) / 2), 2.0) + Y * Math.pow(Math.sin((long2 - long1) / 2), 2.0);
+		double X = Math.pow(Math.sin((lat2 - lat1) / TWO), TWO) + Y * Math.pow(Math.sin((long2 - long1) / TWO), TWO);
 
 		double distance = EARTH_DIAMETER * Math.atan2(Math.sqrt(X), Math.sqrt(1 - X));
 
@@ -93,7 +93,6 @@ public class Engine {
 
 	// TODO Refactor this piece of shit
 	public double doDrone(String startAddr, String destAddr) throws Exception {
-
 		String[] startLatLng, destLatLng;
 
 		if (startAddr.isEmpty() || destAddr.isEmpty())

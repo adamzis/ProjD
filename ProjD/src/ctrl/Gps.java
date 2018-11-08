@@ -19,12 +19,13 @@ public class Gps extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getParameter("calc") != null) {
+			String fromLat, fromLong, toLat, toLong;
 			Engine model = Engine.getEngine();
 
-			String fromLat = request.getParameter("fromLat");
-			String fromLong = request.getParameter("fromLong");
-			String toLat = request.getParameter("toLat");
-			String toLong = request.getParameter("toLong");
+			fromLat = request.getParameter("fromLat");
+			fromLong = request.getParameter("fromLong");
+			toLat = request.getParameter("toLat");
+			toLong = request.getParameter("toLong");
 
 			request.setAttribute("fromLat", fromLat);
 			request.setAttribute("fromLong", fromLong);

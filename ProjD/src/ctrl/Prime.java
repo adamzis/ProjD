@@ -20,31 +20,27 @@ public class Prime extends HttpServlet {
 			throws ServletException, IOException {
 
 		if (request.getParameter("calc") != null || request.getParameter("next") != null) {
+			String lessThan, greaterThan, result;
 			Engine model = Engine.getEngine();
 
-			String firstNumber, lastNumber, result;
-
 			if (request.getParameter("next") != null && request.getParameter("result") != null)
-				firstNumber = request.getParameter("result");
+				lessThan = request.getParameter("result");
 			else
-				firstNumber = request.getParameter("lessThan");
+				lessThan = request.getParameter("lessThan");
 
-			lastNumber = request.getParameter("greaterThan");
+			greaterThan = request.getParameter("greaterThan");
 
 			try {
-				result = model.doPrime(firstNumber, lastNumber);
-				request.setAttribute("result", result);	
+				result = model.doPrime(lessThan, greaterThan);
+				request.setAttribute("result", result);
 			} catch (Exception e) {
 				request.setAttribute("error", e.getMessage());
 			}
 
-			request.setAttribute("lessThan", firstNumber);
-			request.setAttribute("greaterThan", lastNumber);
-
+			request.setAttribute("lessThan", lessThan);
+			request.setAttribute("greaterThan", greaterThan);
 		}
-
 		this.getServletContext().getRequestDispatcher("/Prime.jspx").forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

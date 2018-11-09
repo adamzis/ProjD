@@ -21,7 +21,7 @@
 		<h2>Drone Delivery Timer</h2>
 		<hr />
 
-		<div id="forms">
+		<div class="forms">
 			<form method="post" action="Drone.do">
 				<p>
 					<input type="text" placeholder="Starting Address" name="startAddr"

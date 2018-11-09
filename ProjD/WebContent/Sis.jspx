@@ -21,7 +21,7 @@
 		<h2>SIS Report Generator</h2>
 		<hr />
 
-		<div id="forms">
+		<div class="forms">
 			<form method="post" action="Sis.do">
 				<p>
 					<input type="text" placeholder="Name Prefix ..." name="namePre"

@@ -16,6 +16,8 @@ public class StudentDAO {
 	public static final String DERBY_DRIVER = "org.apache.derby.jdbc.ClientDriver";
 	public static final String DB_URL = "jdbc:derby://localhost:64413/EECS;user=student;password=secret";
 	public static final String QUERY = "SELECT * FROM SIS WHERE SURNAME LIKE ? AND GPA >= ?";
+	public static final String[] COLUMNS = { "NONE", "SURNAME", "GPA", "COURSES", "MAJOR" };
+
 	private Connection con;
 
 	// This helps prevent SQL injection attacks on the ORDER BY statement.
@@ -24,11 +26,9 @@ public class StudentDAO {
 	public StudentDAO() {
 		orderMap = new HashMap<>();
 
-		orderMap.put("NONE", "NONE");
-		orderMap.put("SURNAME", "SURNAME");
-		orderMap.put("GPA", "GPA");
-		orderMap.put("COURSES", "COURSES");
-		orderMap.put("MAJOR", "MAJOR");
+		for (String order : COLUMNS) {
+			orderMap.put(order, order);
+		}
 
 		try {
 			Class.forName(DERBY_DRIVER).newInstance();

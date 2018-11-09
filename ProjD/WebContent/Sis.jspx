@@ -34,7 +34,7 @@
 				<p>
 					<select id="sortBy" name="sortBy">
 						<option value="NONE">Select One:</option>
-						<option value="SURNAME">Last Name:</option>
+						<option value="SURNAME">Last Name</option>
 						<option value="MAJOR">Major</option>
 						<option value="COURSES">Number Of Courses</option>
 						<option value="GPA">GPA</option>

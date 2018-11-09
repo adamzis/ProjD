@@ -1,11 +1,9 @@
 package analytics;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequestAttributeEvent;
 import javax.servlet.ServletRequestAttributeListener;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
@@ -24,101 +22,6 @@ import javax.servlet.http.HttpSessionListener;
 @WebListener
 public class Monitor implements ServletContextListener, ServletContextAttributeListener, ServletRequestListener,
 		ServletRequestAttributeListener, HttpSessionAttributeListener, HttpSessionListener {
-
-	/**
-	 * Default constructor.
-	 */
-	public Monitor() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see ServletContextAttributeListener#attributeAdded(ServletContextAttributeEvent)
-	 */
-	public void attributeAdded(ServletContextAttributeEvent scae) {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see ServletRequestListener#requestDestroyed(ServletRequestEvent)
-	 */
-	public void requestDestroyed(ServletRequestEvent sre) {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see ServletContextAttributeListener#attributeRemoved(ServletContextAttributeEvent)
-	 */
-	public void attributeRemoved(ServletContextAttributeEvent scae) {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see ServletRequestAttributeListener#attributeRemoved(ServletRequestAttributeEvent)
-	 */
-	public void attributeRemoved(ServletRequestAttributeEvent srae) {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see ServletRequestListener#requestInitialized(ServletRequestEvent)
-	 */
-	public void requestInitialized(ServletRequestEvent sre) {
-		HttpServletRequest httpReq = (HttpServletRequest) sre.getServletRequest();
-
-		if (httpReq.getParameter("calc") != null) {
-			ServletContext context = sre.getServletContext();
-			String pageVisted = httpReq.getRequestURL().toString();
-
-			int totalUsage = (int) context.getAttribute("totalUsage");
-			int droneUsage = (int) context.getAttribute("droneUsage");
-			double dronePercent = (double) context.getAttribute("dronePercent");
-
-			sre.getServletContext().setAttribute("totalUsage", ++totalUsage);
-
-			if (pageVisted.matches(".*Drone.do")) {
-				context.setAttribute("droneUsage", ++droneUsage);
-			}
-
-			dronePercent = ((double) droneUsage / (double) totalUsage) * 100;
-			context.setAttribute("dronePercent", dronePercent);
-
-			int totalSessions = (int) context.getAttribute("totalSessions");
-			int usedDroneRide = (int) context.getAttribute("sessionDroneRide");
-			double droneRidePercent = (double) context.getAttribute("droneRidePercent");
-
-			droneRidePercent = ((double) usedDroneRide / (double) totalSessions) * 100;
-			context.setAttribute("droneRidePercent", droneRidePercent);
-		}
-	}
-
-	/**
-	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
-	 */
-	public void contextDestroyed(ServletContextEvent sce) {
-
-	}
-
-	/**
-	 * @see ServletRequestAttributeListener#attributeAdded(ServletRequestAttributeEvent)
-	 */
-	public void attributeAdded(ServletRequestAttributeEvent srae) {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see ServletRequestAttributeListener#attributeReplaced(ServletRequestAttributeEvent)
-	 */
-	public void attributeReplaced(ServletRequestAttributeEvent srae) {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see ServletContextAttributeListener#attributeReplaced(ServletContextAttributeEvent)
-	 */
-	public void attributeReplaced(ServletContextAttributeEvent scae) {
-		// TODO Auto-generated method stub
-	}
 
 	/**
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
@@ -147,10 +50,36 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
 	}
 
 	/**
-	 * @see HttpSessionListener#sessionDestroyed(HttpSessionEvent)
+	 * @see ServletRequestListener#requestInitialized(ServletRequestEvent)
 	 */
-	public void sessionDestroyed(HttpSessionEvent se) {
-		// TODO Auto-generated method stub
+	public void requestInitialized(ServletRequestEvent sre) {
+		HttpServletRequest httpReq = (HttpServletRequest) sre.getServletRequest();
+
+		if (httpReq.getParameter("calc") != null) {
+			ServletContext context = sre.getServletContext();
+			String pageVisted = httpReq.getRequestURL().toString();
+
+			incrementUsage(context, pageVisted);
+			calculateDroneRide(context);
+		}
+	}
+
+	// Increments the total usage, checks if the used service was drone and
+	// increments that too. Finally recalculates the percentage of drone usage and
+	// stores it back in the context.
+	private void incrementUsage(ServletContext context, String pageVisted) {
+		int totalUsage = (int) context.getAttribute("totalUsage");
+		int droneUsage = (int) context.getAttribute("droneUsage");
+		double dronePercent = (double) context.getAttribute("dronePercent");
+
+		if (pageVisted.matches(".*Drone.do"))
+			context.setAttribute("droneUsage", ++droneUsage);
+
+		context.setAttribute("totalUsage", ++totalUsage);
+
+		dronePercent = ((double) droneUsage / (double) totalUsage) * 100;
+
+		context.setAttribute("dronePercent", dronePercent);
 	}
 
 	/**
@@ -160,37 +89,35 @@ public class Monitor implements ServletContextListener, ServletContextAttributeL
 		HttpSession session = se.getSession();
 
 		if (session.getAttribute("usedDrone") != null && session.getAttribute("usedRide") != null
-				&& session.getAttribute("addedDroneRideStat") == null) {
-
-			boolean usedDrone = (boolean) session.getAttribute("usedDrone");
-			boolean usedRide = (boolean) session.getAttribute("usedRide");
-
-			if (usedDrone && usedRide) {
-				ServletContext context = session.getServletContext();
-				int usedDroneRide = (int) context.getAttribute("sessionDroneRide");
-				int totalSessions = (int) context.getAttribute("totalSessions");
-				double droneRidePercent = (double) context.getAttribute("droneRidePercent");
-
-				context.setAttribute("sessionDroneRide", ++usedDroneRide);
-				session.setAttribute("addedDroneRideStat", true);
-
-				droneRidePercent = ((double) usedDroneRide / (double) totalSessions) * 100;
-				context.setAttribute("droneRidePercent", droneRidePercent);
-			}
-		}
+				&& session.getAttribute("addedDroneRideStat") == null)
+			usedDroneRide(session);
 	}
 
-	/**
-	 * @see HttpSessionAttributeListener#attributeRemoved(HttpSessionBindingEvent)
-	 */
-	public void attributeRemoved(HttpSessionBindingEvent se) {
-		// TODO Auto-generated method stub
+	// The user used both drone and ride as the variables are set. Increments people
+	// who used both, sets that the session user has had their stat incremented, and
+	// then calculates people who have used drone and ride.
+	private void usedDroneRide(HttpSession session) {
+
+		ServletContext context = session.getServletContext();
+		int usedDroneRide = (int) context.getAttribute("sessionDroneRide");
+
+		context.setAttribute("sessionDroneRide", ++usedDroneRide);
+		session.setAttribute("addedDroneRideStat", true);
+
+		calculateDroneRide(context);
+
 	}
 
-	/**
-	 * @see HttpSessionAttributeListener#attributeReplaced(HttpSessionBindingEvent)
-	 */
-	public void attributeReplaced(HttpSessionBindingEvent se) {
-		// TODO Auto-generated method stub
+	// Calculates the ratio of sessions that both drone and ride with total
+	// sessions. Called when the 'usedDrone/usedRide' attributes are added, and with
+	// every service request.
+	private void calculateDroneRide(ServletContext context) {
+		int totalSessions = (int) context.getAttribute("totalSessions");
+		int usedDroneRide = (int) context.getAttribute("sessionDroneRide");
+		double droneRidePercent = (double) context.getAttribute("droneRidePercent");
+
+		droneRidePercent = ((double) usedDroneRide / (double) totalSessions) * 100;
+		context.setAttribute("droneRidePercent", droneRidePercent);
 	}
+
 }

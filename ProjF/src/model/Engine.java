@@ -49,6 +49,14 @@ public class Engine {
 	}
 
 	public List<StudentBean> doSis(String prefix, String minGpa, String sortBy) throws Exception {
+		if (!prefix.matches("[A-Za-z]*")) {
+			throw new IllegalArgumentException("Prefix can only contain letters or be blank.");
+		}
+		
+		if (!minGpa.matches("\\d?")) {
+			throw new IllegalArgumentException("GPA can only be a number from 0 to 9.");
+		}
+
 		return dao.retrieve(prefix, minGpa, sortBy);
 	}
 }

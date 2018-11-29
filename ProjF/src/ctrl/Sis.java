@@ -38,7 +38,7 @@ public class Sis extends HttpServlet {
 
 		response.setContentType("text/json");
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
+
 		Writer restOut = response.getWriter();
 		Gson gson = new Gson();
 

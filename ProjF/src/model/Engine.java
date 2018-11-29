@@ -27,15 +27,15 @@ public class Engine {
 			lowerLong = Long.parseLong(min);
 			upperLong = Long.parseLong(max);
 		} catch (NumberFormatException e) {
-			throw new Exception("Invalid entires.");
+			throw new IllegalArgumentException("Invalid entires.");
 		}
 
 		if (upperLong < 0)
-			throw new Exception("end < 0: " + upperLong);
+			throw new IllegalArgumentException("end < 0: " + upperLong);
 		else if (lowerLong < 0)
-			throw new Exception("start < 0: " + lowerLong);
+			throw new IllegalArgumentException("start < 0: " + lowerLong);
 		else if (lowerLong > upperLong)
-			throw new Exception("No more primes in range");
+			throw new IllegalArgumentException("start > end");
 
 		BigInteger primeInt;
 

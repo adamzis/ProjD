@@ -1,0 +1,49 @@
+<p>
+    <a routerLink="/dash" class="logo">Dashboard</a>
+</p>
+
+<form (ngSubmit)="onSubmit();">
+    <p>
+        <label>Prefix:</label>
+        <input type="text" [(ngModel)]="prefix" name="prefix" >
+    </p>
+
+    <p>
+        <label>Min Gpa:</label>
+        <input type="text" [(ngModel)]="minGpa" name="minGpa">
+    </p>
+    
+    <select [(ngModel)]="sortBy" name="sortBy">
+        <option value="NONE">Select One:</option>
+        <option value="SURNAME">Last Name</option>
+        <option value="MAJOR">Major</option>
+        <option value="COURSES">Number Of Courses</option>
+        <option value="GPA">GPA</option>
+    </select>
+
+    <p>
+        <input type="submit" value="Get Students">
+    </p>
+</form>
+
+<div [hidden]="!submitted">
+    <div *ngIf="status; then success else failure"></div>
+    
+    <ng-template #success>
+        <p> Sorted by {{ sortBy }}</p>
+        <table border="1">
+        	<tr></tr>
+			<tr *ngFor="let student of result">
+				<td>{{ student.name }}</td>
+				<td>{{ student.major }}</td>
+				<td>{{ student.courses }}</td>
+				<td>{{ student.gpa }} </td>
+			</tr>
+        </table>
+
+    </ng-template>
+
+    <ng-template #failure>
+        <span style="color:red;">{{ result }}</span>
+    </ng-template>
+</div>

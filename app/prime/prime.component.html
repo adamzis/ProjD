@@ -1,0 +1,35 @@
+<p>
+    <a routerLink="/dash">Dashboard</a>
+</p>
+
+<form (ngSubmit)="onSubmit()">
+    <p>
+        <label>Min:</label>
+        <input type="text" [(ngModel)]="min" name="min">
+    </p>
+
+    <p>
+        <label>Max:</label>
+        <input type="text" [(ngModel)]="max" name="max">
+    </p>
+
+    <input type="submit" value="Get Prime">
+
+</form>
+
+
+<div [hidden]="!submitted">
+
+	<div [hidden]="!status">
+        <span style="color:green;">{{ result }}</span>
+
+        <form (ngSubmit)="findNext()">
+            <input type="submit" value="Next Prime">
+        </form>
+	</div>
+
+	<div [hidden]="status">
+		<span style="color: red;">{{ result }}</span>
+	</div>
+
+</div>
